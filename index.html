@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+
+<html class="" lang="en">
+    <head>
+        <title>StreamLive!</title>
+        <meta charset="utf-8">
+        <link rel="icon" type="image/png" href="assets/img/favicon.png">
+        <meta name="viewport" content="width=device-width, height=device-height initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script><link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"> 
+        <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet"> 
+        <meta name="author" content="Ryan Hults">
+        <link rel="author" href="https://ryanthults.github.io" alt="https://plus.google.com/u/2/108203311083664618233">
+        <script>
+            (function() {
+                $(document).ready(function() {
+                    var channels = ["kentatonic", "gfomega111", "kephrii", "moonmoon_ow", "drlupo", "freecodecamp", "prolikechro", "habathcx", "RobotCaleb", "noobs2ninjas"];
+
+                    function streamBuilder(streamStatus, name, icon, title, link, game, viewers, followers, delay) {
+                        var streamHTML = '<a href="'+link+'" class="stream-block-link"><div class="row stream-row '+streamStatus+' '+name+' align-items-center text-center"><div class="col-3"><img class="img-fluid stream-icon" src="'+icon+'"/></div><div class="col-3"><p class="streamer-name my-auto">'+name+'</p></div><div class="col-6"><p class="stream-title my-auto">'+title+'</p></div></div>';
+                        var details = '<div class="row stream-row-detail align-items-center text-center"><div class="col-3"><p class="stream-details my-auto">Game: '+game+'</p></div><div class="col-3"><p class="stream-details my-auto">Viewers: '+viewers+'</p></div><div class="col-3"><p class="stream-details my-auto">Followers: '+followers+'</p></div><div class="col-3"><p class="stream-details my-auto">Delay: '+delay+'</p></div></div></a>';
+                        if (streamStatus === "stream-online") {
+                            streamHTML += details;
+                        } else {
+                            streamHTML += '</a>';
+                        }
+                        $("#streams").append(streamHTML);
+                    }
+
+                    function twitchAPI(name) {
+                        var isOnline = false;
+                        $.getJSON("https://wind-bow.gomix.me/twitch-api/streams/"+name+"/?callback=?", function(a) {
+                            var streamStatus = "stream-offline";
+                            var title = "Offline";
+                            var link = "#";
+                            if (a.stream !== null) {
+                                streamStatus = "stream-online";
+                                title = a.stream.channel.status;
+                                link = a.stream.channel.url;
+                                streamBuilder(streamStatus, name, a.stream.channel.logo,title,link, a.stream.game, a.stream.viewers, a.stream.channel.followers, a.stream.delay);
+                            } else {
+                                $.getJSON("https://wind-bow.gomix.me/twitch-api/channels/"+name+"/?callback=?", function(a) {
+                                    streamBuilder(streamStatus, name, a.logo,title,link);
+                                });
+                            }  
+                        });
+                    }
+
+                    function streamStatus(name) {
+                        twitchAPI(name);
+                    }
+                    
+                    channels.forEach(element => {
+                        streamStatus(element);
+                    });
+                    
+                    $('#search-btn').on('click', function(e){   
+                        if ($("#searchBar").val() != "") {
+                            var searchTerm = $("#searchBar").val();
+                            if ($.inArray(searchTerm, channels) === -1) {
+                                channels.push(searchTerm);
+                                $("#searchBar").val('');
+                                $("#streams").html("");
+                                channels.forEach(element => {
+                                    streamStatus(element);
+                                });
+                            }
+                        }
+                    });
+
+                    $('#searchBar').keypress(function(e) {
+                       if(e.keyCode==13 && $("#searchBar").val() != ""){
+                            var searchTerm = $("#searchBar").val();
+                            if ($.inArray(searchTerm, channels) === -1) {
+                                channels.push(searchTerm);
+                                $("#searchBar").val('');
+                                $("#streams").html("");
+                                channels.forEach(element => {
+                                    streamStatus(element);
+                                });
+                            }
+                       } 
+                    });
+                    
+                });
+            })(jQuery);
+        </script>
+        <style>
+            body {
+                font-family: 'Montserrat', sans-serif;
+            }
+
+            h1 {
+                color: white;
+                font-size: 64px;
+            }
+            /* Overrides */
+            .container-fluid {
+                height: 100vh;
+                width: 100vw;
+                overflow: hidden;
+            }
+
+            /* main CSS */
+            #app {
+                background: #555;
+                opacity: .75;
+                border-radius: 3px;
+                top: 50px;
+            }
+            
+            #bg {
+                content: " ";
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: cover;
+                width: 100vw;
+                height: 100vh;
+                padding: 0;
+                margin: 0;
+                position: absolute;
+            }
+            #overlay {
+                content: " ";
+                background-color: #555;
+                width: 100vw;
+                height: 100vh;
+                padding: 0;
+                margin: 0;
+                position: absolute;
+                opacity: .2;
+                
+            }
+
+            .stream-row {
+                height: 75px;
+            }
+            
+            .stream-row-detail {
+                height: 30px;
+                font-size: 12px;
+                background: rgb(141, 198, 218);
+                color: #333;
+            }
+            .stream-icon {
+                max-height: 50px;
+            }
+            .stream-online {
+                background: lightblue;
+            }
+
+            .stream-offline {
+                background: lightcoral;
+            }
+
+            .stream-block-link {
+                text-decoration: none;
+                color: #555;
+            }
+            
+            .stream-block-link:hover {
+                text-decoration: none;
+                color: black;
+            }
+            
+            #footer {            
+                padding: 0;
+                margin: 0;
+                top: 75px;
+                opacity: 1;
+            }
+
+        /* End of CSS */
+        </style>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div id="bg"></div>
+            
+            <div class = "row">
+                <div class = "col-md-10 col-lg-6 offset-md-1 offset-lg-3" id = "app">
+                    <h1>StreamLive!</h1>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="searchBar" placeholder="Add a streamer!" aria-label="" aria-describedby="add a streamer to the watch list">
+                        <div class="btn searchBarButton" id="search-btn" type="button"><i class="fas fa-user-plus"></i></div>
+                    </div>
+                    <div id="streams">
+                        
+                    </div>   
+                </div> 
+                <div class="col-12 align-self-center text-center" id="footer">
+                    <p>Created by <a href="http://ryanthults.com" rel="noopener" style="">Ryan Hults</a></p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
