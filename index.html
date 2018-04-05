@@ -17,7 +17,7 @@
         <script>
             (function() {
                 $(document).ready(function() {
-                    var channels = ["kentatonic", "gfomega111", "kephrii", "moonmoon_ow", "drlupo", "freecodecamp", "prolikechro", "habathcx", "RobotCaleb", "noobs2ninjas"];
+                    var channels = ["kentatonic", "gfomega111", "kephrii", "moonmoon_ow", "drlupo", "freecodecamp"];
 
                     function streamBuilder(streamStatus, name, icon, title, link, game, viewers, followers, delay) {
                         var streamHTML = '<a href="'+link+'" class="stream-block-link"><div class="row stream-row '+streamStatus+' '+name+' align-items-center text-center"><div class="col-3"><img class="img-fluid stream-icon" src="'+icon+'"/></div><div class="col-3"><p class="streamer-name my-auto">'+name+'</p></div><div class="col-6"><p class="stream-title my-auto">'+title+'</p></div></div>';
@@ -43,7 +43,7 @@
                                 streamBuilder(streamStatus, name, a.stream.channel.logo,title,link, a.stream.game, a.stream.viewers, a.stream.channel.followers, a.stream.delay);
                             } else {
                                 $.getJSON("https://wind-bow.gomix.me/twitch-api/channels/"+name+"/?callback=?", function(a) {
-                                    streamBuilder(streamStatus, name, a.logo,title,link);
+                                    streamBuilder(streamStatus, name, a.logo,title,a.url);
                                 });
                             }  
                         });
