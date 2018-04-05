@@ -40,7 +40,7 @@
                                 streamStatus = "stream-online";
                                 title = a.stream.channel.status;
                                 link = a.stream.channel.url;
-                                streamBuilder(streamStatus, name, a.stream.channel.logo,title,link, a.stream.game, a.stream.viewers, a.stream.channel.followers, a.stream.delay);
+                                streamBuilder(streamStatus, name, a.stream.preview.small,title,link, a.stream.game, a.stream.viewers, a.stream.channel.followers, a.stream.delay);
                             } else {
                                 $.getJSON("https://wind-bow.gomix.me/twitch-api/channels/"+name+"/?callback=?", function(a) {
                                     streamBuilder(streamStatus, name, a.logo,title,a.url);
@@ -122,6 +122,11 @@
                 background: rgb(141, 198, 218);
                 color: #333;
             }
+
+            .stream-title {
+                font-size: 12px;
+            }
+
             .stream-icon {
                 max-height: 50px;
             }
