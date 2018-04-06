@@ -20,7 +20,7 @@
                     var channels = ["kentatonic", "gfomega111", "kephrii", "moonmoon_ow", "drlupo", "freecodecamp", "ninja"];
 
                     function streamBuilder(streamStatus, name, icon, title, link, game, viewers, followers, delay) {
-                        var streamHTML = '<a href="'+link+'" class="stream-block-link"><div class="row stream-row '+streamStatus+' '+name+' align-items-center text-center"><div class="col-3"><img class="img-fluid stream-icon" src="'+icon+'"/></div><div class="col-3"><p class="streamer-name my-auto">'+name+'</p></div><div class="col-6"><p class="stream-title my-auto">'+title+'</p></div></div>';
+                        var streamHTML = '<a href="'+link+'" class="stream-block-link" target="_blank"><div class="row stream-row '+streamStatus+' '+name+' align-items-center text-center"><div class="col-3"><img class="img-fluid stream-icon" src="'+icon+'"/></div><div class="col-3"><p class="streamer-name my-auto">'+name+'</p></div><div class="col-6"><p class="stream-title my-auto">'+title+'</p></div></div>';
                         var details = '<div class="row stream-row-detail align-items-center text-center"><div class="col-3"><p class="stream-details my-auto">Game: '+game+'</p></div><div class="col-3"><p class="stream-details my-auto">Viewers: '+viewers+'</p></div><div class="col-3"><p class="stream-details my-auto">Followers: '+followers+'</p></div><div class="col-3"><p class="stream-details my-auto">Delay: '+delay+'</p></div></div></a>';
                         if (streamStatus === "stream-online") {
                             streamHTML += details;
@@ -101,7 +101,6 @@
             .container-fluid {
                 height: 100vh;
                 width: 100vw;
-                
             }
 
             /* main CSS */
